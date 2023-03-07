@@ -1,5 +1,5 @@
-**Find_plasma_membrane.ijm an ImageJ macro used to define a plasma membrane ROI
-**
+**Find_plasma_membrane.ijm**
+
 
 The macro was first used in https://doi.org/10.1016/j.bbamem.2022.184094
 
@@ -37,11 +37,12 @@ Requires the Plugins StackReg and Translation alignment that can be found at htt
 
 16) The complete ROI manager is automatically saved.
 
-17) If the original images were cropped, a CropROI overlay will be added to original images, showing which cell or image area have already been analyzed.\
+17) If the original images were cropped, a CropROI overlay will be added to original images, showing which cell or image area have already been analyzed.
 
 
 
-Measure_plasma_membrane.ijm - an ImageJ macro that makes a distance map and make measurement from consecutive ROIs
+
+**Measure_plasma_membrane.ijm**
 
 The macro was first used in https://doi.org/10.1016/j.bbamem.2022.184094
 

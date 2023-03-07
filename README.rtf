@@ -1,0 +1,149 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2708
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Arial-BoldMT;\f1\fswiss\fcharset0 ArialMT;\f2\froman\fcharset0 Times-Roman;
+\f3\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww16220\viewh17820\viewkind0
+\deftab720
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f0\b\fs29\fsmilli14667 \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 Find_plasma_membrane.ijm an ImageJ macro used to define a plasma membrane ROI\
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f1\b0 \cf2 \ulnone The macro was first used in https://doi.org/10.1016/j.bbamem.2022.184094\
+Requires the Plugins StackReg and Translation alignment that can be found at https://github.com/fiji-BIG/StackReg and http://punias.free.fr/ImageJ/Translation_Alignment.java
+\f2 \
+
+\f1 1) Open and load an image from the first channel. If the input is a stack of images the macro defaults to the central slice; the user confirms/changes; the selected image is copied. The slice selection is saved in the ROI manager as Slicenumber (Fig.1).
+\f2 \
+
+\f1 2) The image/image stack from the second channel is automatically loaded; similar names need to be used. This is settable, e.g. 483/442, ch00/ch01, NameLongerR/NameShorterR. If stack; the matching slice from the first stack is copied.
+\f2 \
+
+\f1 3) Option to crop images, e.g. to include only a single cell. The cropped image is saved in the ROI manager as CropROI.
+\f2 \
+
+\f1 4) The single images from each channel are combined into a stack that is used to create the ROI.
+\f2 \
+
+\f1 5) Registration of the images performed and the user is asked to check the results visually. The offset is saved as point selection.
+\f2 \
+
+\f1 6) Creation of a weighted smoothed (default Gau 0.8, settable) combination of the two images. The weighting gives the two input images equal prominence. The weighted image is added to the stack providing a choice between 3 images, fluorophore 1, 2 or the combined image.
+\f2 \
+
+\f1 7) Manual selection of an initial ROI using a few sequential points that are connected by a line, saved in the ROI manager as Initial.
+\f2 \
+
+\f1 8) The initial ROI is used to find the centre of the cell, which is saved as a point selection in the ROI manager as Centre.
+\f2 \
+
+\f1 9) A search for the maximal intensity pixel around the manually selected points. There are three search options: circular, a perpendicular line or a line towards the cell centre. New points are marked at the local intensity peaks. The search parameters used (type of search and range) for the small number of manually marked points and the more numerous interpolated points are set separately (Fig. 2).
+\f2 \
+\pard\pardeftab720\sl313\partightenfactor0
+
+\f1 \cf2 10) The updated ROI is saved in the ROI manager as Initial Max.
+\f3 \
+
+\f1 \'a0
+\f3 \
+\pard\pardeftab720\sl313\sa213\partightenfactor0
+
+\f1 \cf2 11) The user either approves or changes the new positions of the point. If changed a new ROI is saved in the ROI manager as InitialMax_Edt creating a record of any user intervention.
+\f3 \
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f1 \cf2 12) New points are interpolated between the existing ones at a spacing selected by the user and are saved in the ROI manager as Memb interp.
+\f2 \
+
+\f1 13) A search for the maximal intensity pixel around the interpolated points as in 9. The resulting ROI is saved in the ROI manager as Mmb Intp Mx.
+\f2 \
+
+\f1 14) Option to manually delete or move points. If changed a new ROI is saved in the ROI manager as Mmb Intp Mx_Edt
+\f2 \
+
+\f1 15) The aligned stack images are saved with \'94Algnd\'94 included in the name e.g. Test_ch00Stack_Algnd-Cell3.tif. Since the original image might contain more than one cell and each cell may have been previously analyzed the name includes a reference number, 3 in the example name, based on a check of the file names already used.
+\f2 \
+
+\f1 16) The complete ROI manager is automatically saved.
+\f2 \
+
+\f1 17) If the original images were cropped, a CropROI overlay will be added to original images, showing which cell or image area have already been analyzed.\
+\
+\
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f0\b \cf2 \ul Measure_plasma_membrane.ijm; sequence of events
+\f2\b0 \ulnone \
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f1 \cf2 The aim is to make a distance map around the PM, with positive values for distances outwards from the PM and negative values for distances inwards. Then simple intensity thresholding identifies pixels at any specified distance, either inwards or outwards and the resulting ROI makes any required measurements.
+\f2 \
+
+\f1 The basis of the distance map is a binary image of the cell outline, but the PM ROI created with Find_plasma_membrane.ijm has a gap that needs to be filled. The simplest option, joining the two end points of the PM ROI with a straight line is OK for very short gaps but with wider gaps a straight line progressively departs from the cell\'92s outline. Instead of a line, points are interpolated between the two ends points using a weighted average of their distance from the centre.
+\f2 \
+
+\f1 Filling the gap in the PM outline, the distance map inevitably includes values that originate from the gap. These pixels are excluded by voiding their values using a triangular ROI with the centre as its apex and two additional points created by extending a line from the centre through each end point.
+\f2 \
+
+\f1 \'a0
+\f2 \
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f0\b \cf2 \ul The macro steps \'96 creating distance maps from the initial ROI
+\f2\b0 \ulnone \
+\pard\pardeftab720\sl337\sa266\partightenfactor0
+
+\f1 \cf2 A stack of three images generated by Find_plasma_membrane.ijm is expected as input.
+\f2 \
+
+\f1 1) Images to be analysed are opened.
+\f2 \
+
+\f1 2) The macro automatically looks in the folder where the images were and loads the accompanying ROIs that were created in Find_plasma_membrane.ijm.
+\f2 \
+
+\f1 3) The user is prompted to mark a representative background area. This could be based on a band from the PM but the presence of nearby cells makes if preferable to manually select the area. The area is saved.
+\f2 \
+
+\f1 4) The centre coordinates are read.
+\f2 \
+
+\f1 5) The final plasma membrane ROI or, if the ROI was manually edited, the edited version is read.
+\f2 \
+
+\f1 6) The gap between the two end points of the plasma membrane is filled by interpolation using a weighted combination of the radii of the two endpoints. This is effective for gaps of up to half of the cell.
+\f2 \
+
+\f1 7) A three-point polygon covering the parts of the distance map that will originate from the gap is created. The polygon is based on the centre point plus an extension from the centre point through the two end points. The polygon is added to the ROI manager as DTzap.
+\f2 \
+
+\f1 8) A one-pixel-wide binary image with the gap filled is created and inverted.
+\f2 \
+
+\f1 9) A 32-bit distance map is made from the gap-filled plasma membrane ROI. Note all distances have positive values.
+\f2 \
+
+\f1 10) The whole cell ROI is selected and pixels inside the cell multiplied with \'961, producing negative distance values inwards from the PM.
+\f2 \
+
+\f1 11) The gap related areas of the distance map are voided using the three-point polygon.
+\f2 \
+
+\f1 12) Intensity thresholding is used to select one-pixel-wide ROIs at any distance-range inwards or outwards from the plasma membrane and measurements are made from each. Summary data for the whole thresholded area is added to the Results.
+\f2 \
+
+\f1 13) Sequential measurements are made for each pixel in the ROI. This requires finding the start pixel. To this end the thresholded Distance Map is reduced to a binary skeleton, this is then convolved leaving each pixel showing that it is part of the ROI and adding the number of binary neighbours \'96 the end points have one neighbour and a search for an end point is made.
+\f2 \
+
+\f1 14) Measurements of fluorescence intensity from the two channels are made for every pixel and, after a background intensity subtraction, are used to calculate GP-values.14) All measurements and all relevant information are added to the Results (Fig. 1).
+\f2 \
+
+\f1 15) The user is prompted to add a text note the Results Table.
+\f2 \
+
+\f1 16) All the new ROIs are added to the ROI Manager (Fig. 2), which can be saved, preserving a complete record the analysis.
+\f2 \
+\
+}

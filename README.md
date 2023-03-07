@@ -1,4 +1,5 @@
-Find_plasma_membrane.ijm an ImageJ macro used to define a plasma membrane ROI
+**Find_plasma_membrane.ijm an ImageJ macro used to define a plasma membrane ROI
+**
 
 The macro was first used in https://doi.org/10.1016/j.bbamem.2022.184094
 

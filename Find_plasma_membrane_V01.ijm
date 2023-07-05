@@ -34,11 +34,11 @@ ROI names in ROI Manager & their position(index) in ROI Manager when all ROIs ex
 Crop          			CropROI - area extracted from original image 
 Initial					InitialROI    - a few manually entered points
 Centre					CentreROI  - the cell centre
-Initial Max				InitialMxROI - automatically optimised initial points
-Initial Max edited  	 InitialMax_Edt  - optional manual edit
-Memb interp				MmbIntROI    - interpolated points
+Initial Mx				InitialMxROI - automatically optimised initial points
+Initial Mx Edt  	 Initial Max Edt  - optional manual edit
+Mmb Intp				MmbIntROI    - interpolated points
 Mmb Intp Mx				MmbIntpMxROI - optimised interpolated points
-Mmb Intp Mx edited  	 Mmb Intp MxEdt - optional manual edit
+Mmb Intp Mx Edt  	 Mmb Intp Mx Edt - optional manual edit
 
 When more than one cell is cut from the same stack or image set, 
 their origin is marked and retained using an overlay. 
@@ -56,20 +56,20 @@ macroversion="Plasma_membrane_ROI_V01.ijm";// name of version, print with result
 run("Close All");
 print("\\Clear");
 run("Point Tool...", "type=Dot color=Orange size=Tiny counter=0");// point tool settings
-// Search for max intensity
-checkInit=2; //     intitial points: 0-circular area, 1-perpendicular, 2-from centre
-checkIntrp=2;// interpolated points: 0-circular area, 1-perpendicular, 2-from centre
-  rngInit=3;  //       initial points search distance/radius, in pixels
-  rngIntrp=3; // interploated points search distance/radius, in pixels
-SliceSearchUse=1; // which image to use for PM search   channel 1, channel 2, combined 3
-sig=0.5; // sigma for Gaussian blur when smoothing image, in pixels
+// Search for maximal intensity.
+checkInit=2; // Intitial points: 0-circular area, 1-perpendicular, 2-from centre.
+checkIntrp=2;// Interpolated points: 0-circular area, 1-perpendicular, 2-from centre.
+  rngInit=3;  // Initial points search distance/radius, in pixels.
+  rngIntrp=3; // Interploated points search distance/radius, in pixels.
+SliceSearchUse=1; // Which image to use for PM search: 1-channel 1, 2-channel 2, 3-combined image.
+sig=0.8; // Sigma for Gaussian blur when smoothing image, in pixels.
 
-spacing=4; // spacing for interpolation, in pixels
-pxlSze=0.091;// pixel size in micrometers
-defaultSlc=0; // default slice, 0 will selects the middle slice from stack
+spacing=4; // Spacing for interpolation, in pixels.
+pxlSze=0.091;// Pixel size in micrometers.
+defaultSlc=0; // Default slice, 0 will selects the middle slice from stack.
 useSlc=defaultSlc;
-NameLongerRef="LLong";// include in name of Longer wavelength -you can alter the text
-NameShorterRef="LShrt";// include in name of Shorter wavelength - you can alter the text
+NameLongerRef="LLong";// Include in name of Longer wavelength -.you can alter the text.
+NameShorterRef="LShrt";// Include in name of Shorter wavelength - you can alter the text.
 
 run("Conversions...", " ");// no change to values when altering image type
 roiManager("reset");// remove any existing ROIs
@@ -423,13 +423,13 @@ run("Hide Overlay");
 InitialMxROI=roiManager("count")-1;//
 roiManager("select",InitialMxROI);
 //setSlice(1);
-roiManager("rename", "Initial Max");
+roiManager("rename", "Initial Mx");
 roiManager("select",InitialMxROI);
 origN=xpt.length;// original number of points
 EditYN=getBoolean("Manual Edit Points?");// Option to manually edit points
 //Edit Points
 //print("move yn ",moveYN);
-Hv_InitialMax_Edt=0;// no edited initial max ROI
+Hv_InitialMaxEdt=0;// no edited Initial Mx ROI
 if (EditYN==1) {
 	print("edit intitial points");
 	run("Hide Overlay");
@@ -440,8 +440,8 @@ if (EditYN==1) {
 	InitialMxEdtROI=roiManager("count")-1;//
 	//setSlice(1);
 	roiManager("select",InitialMxEdtROI);
-	roiManager("rename", "InitialMax_Edt");
-	Hv_InitialMax_Edt=1; // edited version exists
+	roiManager("rename", "Initial Max Edt");
+	Hv_InitialMaxEdt=1; // edited version exists
 } // end of edit membrane
 
 // Interpolate Interpolate Interpolate Interpolate Interpolate Interpolate Interpolate
@@ -452,13 +452,13 @@ seltype=selectionType() ;
 //print("spline seltype",seltype);
 getSelectionCoordinates(xMaxInt, yMaxInt);
 makeSelection(2, xMaxInt, yMaxInt);// polygon
-setSelectionName("Memb interp");
+setSelectionName("Mmb Intp");
 	for(r=0;r<xMaxInt.length;r++){ // round coordinates
 		xMaxInt[r]=round(xMaxInt[r]);	
 		yMaxInt[r]=round(yMaxInt[r]);	
 	}
 	makeSelection(2, xMaxInt, yMaxInt);// polygon
-    setSelectionName("Memb interp");
+    setSelectionName("Mmb Intp");
 	roiManager("add");
 	MmbIntROI=roiManager("count")-1;
 	Array.show(xMaxInt);
@@ -591,7 +591,7 @@ if (EditYN==1) {
 		roiManager("add");
 		MmbIntpMxEdtROI=roiManager("count")-1;
 	roiManager("select",MmbIntpMxEdtROI);
-	roiManager("rename", "Mmb Intp MxEdt");
+	roiManager("rename", "Mmb Intp Mx Edt");
 } // end of edit membrane
 
 

@@ -107,24 +107,25 @@ nameOfROI=selectionName;
 getSelectionCoordinates(xLineArray, yLineArray); // read coordinates into arrays
 
 // Create Results Table
-setResult("notes", 0,"          mean");
-setResult("notes", 1,"           std");
-setResult("notes", 2,title);// name of image
-setResult("notes", 3,version);// name of macro
-setResult("notes", 4,"BKgrnd442");//background
-setResult("notes", 5,BKgrnd442);//background
-setResult("notes", 6,"BKgrnd483");//background
-setResult("notes", 7,BKgrnd483);//background
-setResult("notes", 8,"BK Pixels "+nPixelsBK);//background
+setResult("Notes", 0,"          Mean");
+setResult("Notes", 1,"           Std");
+setResult("Notes", 2,title);// name of image
+setResult("Notes", 3,version);// name of macro
+setResult("Notes", 4,"Background lower channel:");//background
+setResult("Notes", 5,BKgrnd442);//background
+setResult("Notes", 6,"Background upper channel:");//background
+setResult("Notes", 7,BKgrnd483);//background
+setResult("Notes", 8,"Background pixels: "+nPixelsBK);//background
 	getVoxelSize(Pxlwidth, Pxlheight, Pxlepth, Pxlunit); // pixel size
-setResult("notes", 9,Pxlunit +" " + Pxlheight);//pixel
-setResult("notes", 10,"ROI "+nameOfROI);
-setResult("notes", 11,"   User Notes");
-setResult("notes", 12,"**********");
-setResult("notes",13,"date:  yearMonthDay");
+setResult("Notes", 9,"Pixel size=0.091"); //Pxlunit +" " + Pxlheight);//pixel
+setResult("Notes", 10,"ROI "+nameOfROI);
+setResult("Notes", 11,"   User notes:");
+setResult("Notes", 12,"**********");
+setResult("Notes",13,"Date:YearMonthDay");
 getDateAndTime(year, month, dayOfWeek, dayOfMonth, hour, minute, second, msec);
+month=month+1;
 date="  "+year+"_"+month+"_"+dayOfMonth;
-setResult("notes",14,date);
+setResult("Notes",14,date);
 lastNotes=14; // location of last entry in "Note" column
  setResult("xposO", 0, "null");// dummy values - forces position of column
  setResult("yposO", 0, "null");
@@ -413,8 +414,8 @@ nLine=1+round(mean*wd*ht/255); // +1 to accommodate start pos
 		lastNotes=lastNotes + 1;
 	atnline=lastNotes;
 	  //bbbbbbbbbbbb
-	setResult("notes", atnline, d2s(round(nLine),0));// N of pixels in PM
-	//setResult("notes", atnline, round(nLine));// N of pixels in PM
+	setResult("Notes", atnline, d2s(round(nLine),0));// N of pixels in PM
+	//setResult("Notes", atnline, round(nLine));// N of pixels in PM
 	row=0; // was row=0, but added mean and std to results
 		PerimXarray[row]=xBegin;// start position  
 	   	PerimYarray[row]=yBegin;
@@ -544,7 +545,7 @@ setForegroundColor(255,255,255);
 
 // add note to Results table 
 additionalNote=getString("Note in Result Table", "good");
-setResult("notes", 12,"  "+additionalNote); // user's comments
+setResult("Notes", 12,"  "+additionalNote); // user's comments
 updateResults();
 selectWindow("Results");
 
@@ -559,7 +560,3 @@ if(SaveYesNo==1) {
 		//print(title,"  ",SaveBasic);
 	
 } // save
-
-
-
-

@@ -57,7 +57,7 @@ run("Close All");
 print("\\Clear");
 run("Point Tool...", "type=Dot color=Orange size=Tiny counter=0");// point tool settings
 // Search for maximal intensity.
-checkInit=2; // Intitial points: 0-circular area, 1-perpendicular, 2-from centre.
+checkInit=2; // Initial points: 0-circular area, 1-perpendicular, 2-from centre.
 checkIntrp=2;// Interpolated points: 0-circular area, 1-perpendicular, 2-from centre.
   rngInit=3;  // Initial points search distance/radius, in pixels.
   rngIntrp=3; // Interploated points search distance/radius, in pixels.

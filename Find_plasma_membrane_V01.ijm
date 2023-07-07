@@ -66,9 +66,9 @@ sig=0.8; // Sigma for Gaussian blur when smoothing image, in pixels.
 
 spacing=4; // Spacing for interpolation, in pixels.
 pxlSze=0.091;// Pixel size in micrometers.
-defaultSlc=0; // Default slice, 0 will selects the middle slice from stack.
+defaultSlc=0; // Default slice, 0 will select the middle slice from stack.
 useSlc=defaultSlc;
-NameLongerRef="LLong";// Include in name of Longer wavelength -.you can alter the text.
+NameLongerRef="LLong";// Include in name of Longer wavelength - you can alter the text.
 NameShorterRef="LShrt";// Include in name of Shorter wavelength - you can alter the text.
 
 run("Conversions...", " ");// no change to values when altering image type

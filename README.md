@@ -1,7 +1,7 @@
 **Find_plasma_membrane.ijm**
 
 
-The macro was first used in https://doi.org/10.1016/j.bbamem.2022.184094
+The macro was first used in https://doi.org/10.1016/j.bbamem.2022.184094 and is thoroughly described in https://doi.org/10.1016/j.softx.2023.101570.
 
 Requires the Plugins StackReg and Translation alignment that can be found at https://github.com/fiji-BIG/StackReg and http://punias.free.fr/ImageJ/Translation_Alignment.java
 
